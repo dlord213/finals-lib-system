@@ -36,6 +36,7 @@ class mainApp(Tk):
             self.issueDateListBox.insert(self.count, date)
 
             self.addWindow.destroy()
+            self.getTotal()
 
         self.__add_id = StringVar()
         self.__add_author = StringVar()
@@ -110,6 +111,7 @@ class mainApp(Tk):
                     self.issueDateListBox.delete(index)
             
             self.removeWindow.destroy()
+            self.getTotal()
 
         self.__remove_id = StringVar()
 
@@ -213,13 +215,7 @@ class mainApp(Tk):
                 count += 1
     
     def getTotal(self):
-        with open(self.dataFile, 'r') as temp:
-            data = json.load(temp)
-
-            for book in data.items():
-                self.count += 1
-
-            self.totalStringVar.set(f"Total number of books: {self.count}")
+        self.totalStringVar.set(f"Total number of books: {len(self.idListBox.get(0, END))}")
 
 if __name__ == "__main__":
     win = mainApp()
