@@ -187,10 +187,10 @@ class mainApp(Tk):
         totalLbl.place(x=440,y=510,width=270,height=52)
 
         # LISTBOX PLACE
-        self.idListBox.place(x=0,y=60,width=140,height=385)
-        self.authorListBox.place(x=140,y=60,width=141,height=386)
-        self.bookNameListBox.place(x=280,y=60,width=211,height=386)
-        self.issueDateListBox.place(x=490,y=60,width=229,height=386)
+        self.idListBox.place(x=0,y=120,width=140,height=385)
+        self.authorListBox.place(x=140,y=120,width=141,height=386)
+        self.bookNameListBox.place(x=280,y=120,width=211,height=386)
+        self.issueDateListBox.place(x=490,y=120,width=229,height=386)
 
         # BUTTONS PLACE
         addBtn.place(x=10,y=510,width=207,height=54)
