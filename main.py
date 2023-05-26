@@ -23,24 +23,24 @@ class mainApp(Tk):
     def addBook(self):
 
         def submitBook():
-            id = self.id.get()
-            author = self.author.get()
-            name = self.bookName.get()
-            date = self.issueDate.get()
+            id = self.__add_id.get()
+            author = self.__add_author.get()
+            name = self.__add_bookName.get()
+            date = self.__add_issueDate.get()
 
             self.count += 1
             
-            self.idListBox.insert(self.count, id)
+            self.idListBox.insert(self.count, int(id))
             self.authorListBox.insert(self.count, author)
             self.bookNameListBox.insert(self.count, name)
             self.issueDateListBox.insert(self.count, date)
 
             self.addWindow.destroy()
 
-        self.id = StringVar()
-        self.author = StringVar()
-        self.bookName = StringVar()
-        self.issueDate = StringVar()
+        self.__add_id = StringVar()
+        self.__add_author = StringVar()
+        self.__add_bookName = StringVar()
+        self.__add_issueDate = StringVar()
 
         self.addWindow = Toplevel(self)
         self.addWindow.title("Add book")
@@ -62,10 +62,10 @@ class mainApp(Tk):
             )
 
         # ENTRY WIDGETS
-        idEntry = Entry(self.addWindow, textvariable=self.id)
-        authorEntry = Entry(self.addWindow, textvariable=self.author)
-        bookNameEntry = Entry(self.addWindow, textvariable=self.bookName)
-        issueDateEntry = Entry(self.addWindow, textvariable=self.issueDate)
+        idEntry = Entry(self.addWindow, textvariable=self.__add_id)
+        authorEntry = Entry(self.addWindow, textvariable=self.__add_author)
+        bookNameEntry = Entry(self.addWindow, textvariable=self.__add_bookName)
+        issueDateEntry = Entry(self.addWindow, textvariable=self.__add_issueDate)
 
         for widget in [idEntry, authorEntry, bookNameEntry, issueDateEntry]:
             widget.configure(
@@ -95,7 +95,42 @@ class mainApp(Tk):
             font=("Noto Sans", 16),
             relief='flat',
             bd=0
+        )
 
+    def removeBook(self):
+
+        def submitRemove():
+            for id in self.idListBox.get(0, END):
+                if id == int(self.__remove_id.get()):
+                    index = self.idListBox.get(0, END).index(int(self.__remove_id.get()))
+
+                    self.idListBox.delete(index)
+                    self.authorListBox.delete(index)
+                    self.bookNameListBox.delete(index)
+                    self.issueDateListBox.delete(index)
+            
+            self.removeWindow.destroy()
+
+        self.__remove_id = StringVar()
+
+        self.removeWindow = Toplevel(self)
+        self.removeWindow.title("Remove book")
+        self.removeWindow.configure(
+            bg="white",
+            bd=0
+        )
+
+        idLbl = Label(self.removeWindow, text="ID", anchor="w", font=("Noto Sans Condensed", 18), bg="white",)
+        idEntry = Entry(self.removeWindow, textvariable=self.__remove_id, font=("Noto Sans", 16), relief='groove')
+        submitBtn = Button(self.removeWindow, text="Submit", command=submitRemove)
+
+        idLbl.grid(row=0, column=0, padx=6, pady=6)
+        idEntry.grid(row=0, column=1, padx=6, pady=6)
+        submitBtn.grid(row=1, column=0, columnspan=2, sticky='nsew', padx=6, pady=6)
+        submitBtn.configure(
+            font=("Noto Sans", 16),
+            relief='flat',
+            bd=0
         )
 
     def initLayout(self):
@@ -132,7 +167,7 @@ class mainApp(Tk):
 
         # BUTTONS / STYLES
         addBtn = Button(self, text="Add Book", font=("Noto Sans", 14), command=self.addBook)
-        removeBtn = Button(self, text="Remove Book", font=("Noto Sans", 14))
+        removeBtn = Button(self, text="Remove Book", font=("Noto Sans", 14), command=self.removeBook)
         
         for widget in [addBtn, removeBtn]:
             widget.configure(
