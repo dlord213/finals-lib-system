@@ -38,7 +38,7 @@ class mainApp(Tk):
             self.addWindow.destroy()
             self.getTotal()
 
-        self.__add_id = StringVar()
+        self.__add_id = IntVar()
         self.__add_author = StringVar()
         self.__add_bookName = StringVar()
         self.__add_issueDate = StringVar()
@@ -113,7 +113,7 @@ class mainApp(Tk):
             self.removeWindow.destroy()
             self.getTotal()
 
-        self.__remove_id = StringVar()
+        self.__remove_id = IntVar()
 
         self.removeWindow = Toplevel(self)
         self.removeWindow.title("Remove book")
