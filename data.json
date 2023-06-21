@@ -1,20 +1,20 @@
-{
-    "book_1": {
+[
+    {
         "id": 2022301716,
         "author": "Viernes, Jhon Lloyd D.",
         "name": "Blonded",
         "issued": "December 6, 2003"
     },
-    "book_2": {
+    {
         "id": 666,
         "author": "The Morning Star, Lucifer",
         "name": "The Fallen Angel",
         "issued": "Unknown"
     },
-    "book_3": {
+    {
         "id": 69,
         "author": "Vatsyayana",
         "name": "Kama Sutra",
         "issued": "1883"
-    }
-}
+    },
+]

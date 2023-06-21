@@ -1,6 +1,7 @@
 from tkinter import *
 import json
 
+
 class mainApp(Tk):
     dataFile = './data.json'
     count = 0
@@ -8,32 +9,48 @@ class mainApp(Tk):
     def __init__(self):
         super().__init__()
         self.initWindow()
-        self.initLayout()        
+        self.initLayout()
         self.getTotal()
 
     def initWindow(self):
         self.title("Library Book Information")
         self.configure(
             bg="white",
-            
-            )
+
+        )
         self.geometry('720x576')
         self.resizable(False, False)
 
     def addBook(self):
 
         def submitBook():
+            temp = []
+            with open(self.dataFile, 'r') as tempFile:
+                temp = json.load(tempFile)
+
             id = self.__add_id.get()
             author = self.__add_author.get()
             name = self.__add_bookName.get()
             date = self.__add_issueDate.get()
 
             self.count += 1
-            
+
             self.idListBox.insert(self.count, int(id))
             self.authorListBox.insert(self.count, author)
             self.bookNameListBox.insert(self.count, name)
             self.issueDateListBox.insert(self.count, date)
+
+            temp.append({
+                'id': int(id),
+                'author': str(author),
+                'name': str(name),
+                'date': str(date)
+            })
+
+            with open(self.dataFile, 'w') as jsonFile:
+                json.dump(
+                    temp, jsonFile, indent=4, separators=(',',': ')
+                )
 
             self.addWindow.destroy()
             self.getTotal()
@@ -66,7 +83,8 @@ class mainApp(Tk):
         idEntry = Entry(self.addWindow, textvariable=self.__add_id)
         authorEntry = Entry(self.addWindow, textvariable=self.__add_author)
         bookNameEntry = Entry(self.addWindow, textvariable=self.__add_bookName)
-        issueDateEntry = Entry(self.addWindow, textvariable=self.__add_issueDate)
+        issueDateEntry = Entry(
+            self.addWindow, textvariable=self.__add_issueDate)
 
         for widget in [idEntry, authorEntry, bookNameEntry, issueDateEntry]:
             widget.configure(
@@ -91,7 +109,8 @@ class mainApp(Tk):
         issueDateEntry.grid(row=3, column=1, padx=6, pady=6)
 
         # BUTTON GRID
-        submitBtn.grid(row=4, column=0, columnspan=2, padx=6, pady=6, sticky="nsew")
+        submitBtn.grid(row=4, column=0, columnspan=2,
+                       padx=6, pady=6, sticky="nsew")
         submitBtn.configure(
             font=("Noto Sans", 16),
             relief='flat',
@@ -103,13 +122,14 @@ class mainApp(Tk):
         def submitRemove():
             for id in self.idListBox.get(0, END):
                 if id == int(self.__remove_id.get()):
-                    index = self.idListBox.get(0, END).index(int(self.__remove_id.get()))
+                    index = self.idListBox.get(0, END).index(
+                        int(self.__remove_id.get()))
 
                     self.idListBox.delete(index)
                     self.authorListBox.delete(index)
                     self.bookNameListBox.delete(index)
                     self.issueDateListBox.delete(index)
-            
+
             self.removeWindow.destroy()
             self.getTotal()
 
@@ -122,13 +142,17 @@ class mainApp(Tk):
             bd=0
         )
 
-        idLbl = Label(self.removeWindow, text="ID", anchor="w", font=("Noto Sans Condensed", 18), bg="white",)
-        idEntry = Entry(self.removeWindow, textvariable=self.__remove_id, font=("Noto Sans", 16), relief='groove')
-        submitBtn = Button(self.removeWindow, text="Submit", command=submitRemove)
+        idLbl = Label(self.removeWindow, text="ID", anchor="w",
+                      font=("Noto Sans Condensed", 18), bg="white",)
+        idEntry = Entry(self.removeWindow, textvariable=self.__remove_id, font=(
+            "Noto Sans", 16), relief='groove')
+        submitBtn = Button(self.removeWindow, text="Submit",
+                           command=submitRemove)
 
         idLbl.grid(row=0, column=0, padx=6, pady=6)
         idEntry.grid(row=0, column=1, padx=6, pady=6)
-        submitBtn.grid(row=1, column=0, columnspan=2, sticky='nsew', padx=6, pady=6)
+        submitBtn.grid(row=1, column=0, columnspan=2,
+                       sticky='nsew', padx=6, pady=6)
         submitBtn.configure(
             font=("Noto Sans", 16),
             relief='flat',
@@ -140,12 +164,14 @@ class mainApp(Tk):
         self.totalStringVar = StringVar()
 
         # LABELS / STYLES
-        headerLbl = Label(self, text="Library Book Information", anchor="center", bg="black", fg="white", justify="center", font=("Noto Sans Bold", 36))
+        headerLbl = Label(self, text="Library Book Information", anchor="center",
+                          bg="black", fg="white", justify="center", font=("Noto Sans Bold", 36))
         idLbl = Label(self, text="ID")
         authorLbl = Label(self, text="Author")
         bookNameLbl = Label(self, text="Book Name")
         issueDateLbl = Label(self, text="Issue Date")
-        totalLbl = Label(self, textvariable=self.totalStringVar, font=("Noto Sans Light", 14), bg="white")
+        totalLbl = Label(self, textvariable=self.totalStringVar,
+                         font=("Noto Sans Light", 14), bg="white")
 
         for widget in [idLbl, authorLbl, bookNameLbl, issueDateLbl]:
             widget.configure(
@@ -164,13 +190,15 @@ class mainApp(Tk):
             widget.configure(
                 background="white",
                 font=("Noto Sans Condensed", 16),
-                relief="flat",                
+                relief="flat",
             )
 
         # BUTTONS / STYLES
-        addBtn = Button(self, text="Add Book", font=("Noto Sans", 14), command=self.addBook)
-        removeBtn = Button(self, text="Remove Book", font=("Noto Sans", 14), command=self.removeBook)
-        
+        addBtn = Button(self, text="Add Book", font=(
+            "Noto Sans", 14), command=self.addBook)
+        removeBtn = Button(self, text="Remove Book", font=(
+            "Noto Sans", 14), command=self.removeBook)
+
         for widget in [addBtn, removeBtn]:
             widget.configure(
                 bd=0,
@@ -181,41 +209,46 @@ class mainApp(Tk):
             )
 
         # LABELS PLACE
-        headerLbl.place(x=0,y=0,width=720,height=72)
-        idLbl.place(x=0,y=70,width=144,height=45)
-        authorLbl.place(x=140,y=70,width=144,height=45)
-        bookNameLbl.place(x=280,y=70,width=216,height=45)
-        issueDateLbl.place(x=490,y=70,width=229,height=45)
-        totalLbl.place(x=440,y=510,width=270,height=52)
+        headerLbl.place(x=0, y=0, width=720, height=72)
+        idLbl.place(x=0, y=70, width=144, height=45)
+        authorLbl.place(x=140, y=70, width=144, height=45)
+        bookNameLbl.place(x=280, y=70, width=216, height=45)
+        issueDateLbl.place(x=490, y=70, width=229, height=45)
+        totalLbl.place(x=440, y=510, width=270, height=52)
 
         # LISTBOX PLACE
-        self.idListBox.place(x=0,y=120,width=140,height=385)
-        self.authorListBox.place(x=140,y=120,width=141,height=386)
-        self.bookNameListBox.place(x=280,y=120,width=211,height=386)
-        self.issueDateListBox.place(x=490,y=120,width=229,height=386)
+        self.idListBox.place(x=0, y=120, width=140, height=385)
+        self.authorListBox.place(x=140, y=120, width=141, height=386)
+        self.bookNameListBox.place(x=280, y=120, width=211, height=386)
+        self.issueDateListBox.place(x=490, y=120, width=229, height=386)
 
         # BUTTONS PLACE
-        addBtn.place(x=10,y=510,width=207,height=54)
-        removeBtn.place(x=220,y=510,width=207,height=54)
+        addBtn.place(x=10, y=510, width=207, height=54)
+        removeBtn.place(x=220, y=510, width=207, height=54)
 
         with open(self.dataFile, 'r') as temp:
             data = json.load(temp)
 
-            for book in data.values():
-                count = 0
+            for book in data:
+                print(book)
+                countBox = 0
                 for element, value in book.items():
                     if element == "id":
-                        self.idListBox.insert(count, value)
+                        self.idListBox.insert(countBox, value)
                     elif element == "author":
-                        self.authorListBox.insert(count, value)
+                        self.authorListBox.insert(countBox, value)
                     elif element == "name":
-                        self.bookNameListBox.insert(count, value)
+                        self.bookNameListBox.insert(countBox, value)
                     elif element == "issued":
-                        self.issueDateListBox.insert(count, value)
-                count += 1
-    
+                        self.issueDateListBox.insert(countBox, value)
+                countBox += 1
+
+                self.count += 1
+
     def getTotal(self):
-        self.totalStringVar.set(f"Total number of books: {len(self.idListBox.get(0, END))}")
+        self.totalStringVar.set(
+            f"Total number of books: {len(self.idListBox.get(0, END))}")
+
 
 if __name__ == "__main__":
     win = mainApp()
