@@ -249,7 +249,6 @@ class mainApp(Tk):
             data = json.load(temp)
 
             for book in data:
-                print(book)
                 countBox = 0
                 for element, value in book.items():
                     if element == "id":
