@@ -44,7 +44,7 @@ class mainApp(Tk):
                 'id': int(id),
                 'author': str(author),
                 'name': str(name),
-                'date': str(date)
+                'issued': str(date)
             })
 
             with open(self.dataFile, 'w') as jsonFile:
@@ -120,6 +120,11 @@ class mainApp(Tk):
     def removeBook(self):
 
         def submitRemove():
+            temp = []
+
+            with open(self.dataFile, 'r') as tempFile:
+                temp = json.load(tempFile)
+
             for id in self.idListBox.get(0, END):
                 if id == int(self.__remove_id.get()):
                     index = self.idListBox.get(0, END).index(
@@ -129,6 +134,20 @@ class mainApp(Tk):
                     self.authorListBox.delete(index)
                     self.bookNameListBox.delete(index)
                     self.issueDateListBox.delete(index)
+
+            index = 0
+            for data in temp:
+                for elem, val in data.items():
+                    if elem == 'id':
+                        if val == int(self.__remove_id.get()):
+                            temp.pop(index)
+                index += 1
+                
+
+            with open(self.dataFile, 'w') as jsonFile:
+                json.dump(
+                    temp, jsonFile, indent=4, separators=(',',': ')
+                )
 
             self.removeWindow.destroy()
             self.getTotal()
